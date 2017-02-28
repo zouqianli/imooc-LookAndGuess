@@ -53,7 +53,7 @@
 //    self.imageView.image =[UIImage imageNamed:[NSString stringWithFormat:@"%ld.png",self.index]];
     self.imageView.image = [UIImage imageNamed:@"0.jpg"];
     self.imageView.layer.borderColor = [[UIColor grayColor] CGColor];
-    self.imageView.layer.borderWidth = 5;
+    self.imageView.layer.borderWidth = 8;
     
     // 添加手势点击缩放图片(与放大按钮调用相同的方法)
     [self.imageView setUserInteractionEnabled:YES];
