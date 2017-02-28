@@ -15,6 +15,8 @@
 		99F9AF2C1E5DC5E30030D9DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99F9AF2A1E5DC5E30030D9DF /* LaunchScreen.storyboard */; };
 		99F9AF371E5DC5E30030D9DF /* LookAndGuessTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 99F9AF361E5DC5E30030D9DF /* LookAndGuessTests.m */; };
 		99F9AF421E5DC5E30030D9DF /* LookAndGuessUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 99F9AF411E5DC5E30030D9DF /* LookAndGuessUITests.m */; };
+		99F9AF501E5DE2BD0030D9DF /* questions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 99F9AF4F1E5DE2BD0030D9DF /* questions.plist */; };
+		99F9AF541E5DE38F0030D9DF /* IdiomModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 99F9AF531E5DE38F0030D9DF /* IdiomModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,9 @@
 		99F9AF3D1E5DC5E30030D9DF /* LookAndGuessUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LookAndGuessUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		99F9AF411E5DC5E30030D9DF /* LookAndGuessUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LookAndGuessUITests.m; sourceTree = "<group>"; };
 		99F9AF431E5DC5E30030D9DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		99F9AF4F1E5DE2BD0030D9DF /* questions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = questions.plist; sourceTree = "<group>"; };
+		99F9AF521E5DE38F0030D9DF /* IdiomModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdiomModel.h; sourceTree = "<group>"; };
+		99F9AF531E5DE38F0030D9DF /* IdiomModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdiomModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +86,7 @@
 		99F9AF101E5DC5E30030D9DF = {
 			isa = PBXGroup;
 			children = (
+				99F9AF511E5DE33B0030D9DF /* Model */,
 				99F9AF1B1E5DC5E30030D9DF /* LookAndGuess */,
 				99F9AF351E5DC5E30030D9DF /* LookAndGuessTests */,
 				99F9AF401E5DC5E30030D9DF /* LookAndGuessUITests */,
@@ -117,6 +123,7 @@
 		99F9AF1C1E5DC5E30030D9DF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				99F9AF4F1E5DE2BD0030D9DF /* questions.plist */,
 				99F9AF1D1E5DC5E30030D9DF /* main.m */,
 			);
 			name = "Supporting Files";
@@ -138,6 +145,15 @@
 				99F9AF431E5DC5E30030D9DF /* Info.plist */,
 			);
 			path = LookAndGuessUITests;
+			sourceTree = "<group>";
+		};
+		99F9AF511E5DE33B0030D9DF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				99F9AF521E5DE38F0030D9DF /* IdiomModel.h */,
+				99F9AF531E5DE38F0030D9DF /* IdiomModel.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,6 +223,7 @@
 				TargetAttributes = {
 					99F9AF181E5DC5E30030D9DF = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 74T2Z8A872;
 						ProvisioningStyle = Automatic;
 					};
 					99F9AF311E5DC5E30030D9DF = {
@@ -246,6 +263,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99F9AF501E5DE2BD0030D9DF /* questions.plist in Resources */,
 				99F9AF2C1E5DC5E30030D9DF /* LaunchScreen.storyboard in Resources */,
 				99F9AF291E5DC5E30030D9DF /* Assets.xcassets in Resources */,
 				99F9AF271E5DC5E30030D9DF /* Main.storyboard in Resources */,
@@ -275,6 +293,7 @@
 			files = (
 				99F9AF241E5DC5E30030D9DF /* ViewController.m in Sources */,
 				99F9AF211E5DC5E30030D9DF /* AppDelegate.m in Sources */,
+				99F9AF541E5DE38F0030D9DF /* IdiomModel.m in Sources */,
 				99F9AF1E1E5DC5E30030D9DF /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,6 +441,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 74T2Z8A872;
 				INFOPLIST_FILE = LookAndGuess/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zql.Movie.LookAndGuess;
@@ -433,6 +453,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 74T2Z8A872;
 				INFOPLIST_FILE = LookAndGuess/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zql.Movie.LookAndGuess;
