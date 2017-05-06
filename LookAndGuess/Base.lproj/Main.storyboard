@@ -71,7 +71,7 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1/10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDd-8S-ffw">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1/13" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDd-8S-ffw">
                                 <rect key="frame" x="107" y="60" width="200" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -96,6 +96,7 @@
                         <outlet property="answerOptions" destination="t5U-vw-2dv" id="slu-ip-2uy"/>
                         <outlet property="backgroundPic" destination="vFf-Rs-S2f" id="Au7-ef-KgA"/>
                         <outlet property="imageView" destination="3mh-ka-qPD" id="YFh-99-6h0"/>
+                        <outlet property="nextBtClicked" destination="Kri-EH-4yb" id="2zd-og-Hcs"/>
                         <outlet property="number" destination="jDd-8S-ffw" id="ip1-yi-K9X"/>
                         <outlet property="score" destination="6ip-L3-46B" id="49E-n2-vVd"/>
                         <outlet property="tip" destination="o8h-jO-8qI" id="VS2-Ct-05c"/>

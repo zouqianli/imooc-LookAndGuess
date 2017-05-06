@@ -13,7 +13,7 @@
 @property (nonatomic,strong) NSArray *questions;
 // 背景图片
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundPic;
-// 序号
+// 下一题序号
 @property (nonatomic,assign) NSInteger index;
 // 得分
 @property (weak, nonatomic) IBOutlet UIButton *score;
@@ -27,13 +27,14 @@
 @property (nonatomic,assign) BOOL isBigPic;
 @property (weak, nonatomic) IBOutlet UIView *answer;
 @property (weak, nonatomic) IBOutlet UIView *answerOptions;
-// 存放选择的答案选项 数组
-@property (nonatomic,strong) NSMutableArray *saveAnswer;
-// 最终答案 字符串
-@property (nonatomic,strong) NSString *finalAnswer;
-// 存放要显示的答案 数组
-@property (nonatomic,strong) NSMutableArray *showAnswer;
-
+// 最终答案 字符串 由NSString 改为NSMutableString
+@property (nonatomic ,strong) NSMutableString *finalAnswer;
+//// 存放要显示的答案 数组
+//@property (nonatomic,strong) NSMutableArray *showAnswer;
+//// 存放选择的答案选项 数组 不要了
+//@property (nonatomic,strong) NSMutableArray *saveAnswer;
+// 下一题按钮点击
+@property (weak, nonatomic) IBOutlet UIButton *nextBtClicked;
 // 下一题
 - (IBAction)nextQuestion:(id)sender;
 
@@ -52,7 +53,7 @@
     // 设置初始图片 1
 //    self.imageView.image =[UIImage imageNamed:[NSString stringWithFormat:@"%ld.png",self.index]];
     self.imageView.image = [UIImage imageNamed:@"0.jpg"];
-    self.imageView.layer.borderColor = [[UIColor redColor] CGColor];
+    self.imageView.layer.borderColor = [[UIColor greenColor] CGColor];
     self.imageView.layer.borderWidth = 8;
     
     // 添加手势点击缩放图片(与放大按钮调用相同的方法)
@@ -65,8 +66,8 @@
 #pragma mark - 设置答案按钮、答案选项按钮
 - (void) setButtons:(NSInteger)index
 {
-    self.saveAnswer = [[NSMutableArray alloc] init]; // 初始化
-    self.showAnswer = [[NSMutableArray alloc] init]; // 初始化
+//    self.saveAnswer = [[NSMutableArray alloc] init]; // 初始化
+//    self.showAnswer = [[NSMutableArray alloc] init]; // 初始化
     self.finalAnswer = [[NSMutableString alloc] init]; // 初始化
     // 清除上一次添加的按钮
     for (UIView *view in self.answer.subviews) {
@@ -74,6 +75,7 @@
     }
     for (UIView *view in self.answerOptions.subviews) {
         [view removeFromSuperview];
+        // 不清除的话，按钮个数都一样，只设置title
     }
     // 获取模型
     IdiomModel *model=self.questions[self.index];
@@ -86,7 +88,7 @@
     int offsetX = ([[UIScreen mainScreen] bounds].size.width - w*answerLength-(margin*(answerLength-1)))/2; // X方向偏移量 整体居中
     for (int i=0; i<answerLength; i++) {
         UIButton *bt = [[UIButton alloc] initWithFrame:CGRectMake(offsetX+i*(w+margin), 0, w, w)];
-        [bt addTarget:self action:@selector(quitChooseAnswerWithAnswerLength:) forControlEvents:UIControlEventTouchUpInside];// 绑定事件 事件处理方法  点击可以取消答案显示
+        [bt addTarget:self action:@selector(quitChooseAnswer:withAnswerLength:) forControlEvents:UIControlEventTouchUpInside];// 绑定事件 事件处理方法  点击可以取消答案显示
         bt.backgroundColor = [UIColor whiteColor];
         [bt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self.answer addSubview:bt];
@@ -117,7 +119,8 @@
                 
                 //            createButtons(i);
                 lineNumber++;
-            }else if(i%7 != 0){
+            }
+            else if(i%7 != 0){
                 
                 UIButton *bt = [[UIButton alloc] initWithFrame:CGRectMake(OoffsetX, OoffsetY, OW, OW)];
                 [bt addTarget:self action:@selector(chooseAnswer:withModel:) forControlEvents:UIControlEventTouchUpInside]; // 绑定事件 事件处理方法
@@ -137,48 +140,49 @@
     
 }
 
-#pragma mark - 选择答案
-- (void) chooseAnswer:(id) sender withModel:(IdiomModel *)model
+#pragma mark - 第二次提交作业 选择答案
+- (void) chooseAnswer:(UIButton *) bt withModel:(IdiomModel *)model
 {
+    self.finalAnswer = [NSMutableString stringWithString:@""]; // 清除上一次生成的答案
     // 获取模型
      model=self.questions[self.index];
     // 获取答案长度
     NSInteger answerLength = [model.answer length];
-    // 获取按钮上面的文字
-    NSString *answer = [sender titleForState:UIControlStateNormal];
-    [self.saveAnswer addObject:answer]; // 要保存
-    [self.showAnswer addObject:answer]; // 要显示
-    
-    [sender setHidden:YES]; // 隐藏按钮
-    [self showAnswerWithAnswerLength:answerLength andModel:model]; // 显示答案
-    
-}
-#pragma mark - 显示答案
-- (void) showAnswerWithAnswerLength:(NSInteger) answerLength andModel:(IdiomModel *) model
-{
-//    if (self.saveAnswer.count == answerLength) {
-//        [self.showAnswer arrayByAddingObjectsFromArray:self.saveAnswer]; // 从保存结果 赋值
-//    }
+    NSString *answerItem = nil;
     // 处理 答案显示按钮 的内容
     NSArray *subButtons = self.answer.subviews;
-    if (self.showAnswer.count <= answerLength) {
-        for (int i=0; i<self.showAnswer.count; i++) {
-            if ([subButtons[i] isKindOfClass:[UIButton class]]) {
-                NSString *answer = [self.showAnswer objectAtIndex:i];
-                [subButtons[i] setTitle:answer forState:UIControlStateNormal];
+    if (self.finalAnswer.length <= answerLength) {
+        
+        for (int i=0; i<answerLength; i++) {
+            // 如果按钮内容为空，设置答案
+            answerItem = bt.currentTitle;
+            if ( [subButtons[i] currentTitle] == nil ) {
+                [subButtons[i] setTitle:answerItem forState:UIControlStateNormal];
                 [subButtons[i] setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+                break;// 点击一次 设置一次
             }
         }
+        // 遍历获取答案按钮上面的文字 生成 “最终”答案
+        for (UIButton *answerBt in subButtons) {
+            answerItem = answerBt.currentTitle;
+            if (answerItem != nil) {
+                [_finalAnswer appendString:answerItem];
+            }
+        }
+        NSLog(@"finalAnswer:%@",_finalAnswer);
         // 长度相等 不能再选了
-        if(self.showAnswer.count == answerLength){
+        if(self.finalAnswer.length == answerLength){
             [self.answerOptions setUserInteractionEnabled:NO];
             [self yesOrNoWithAnswerLength:answerLength andModel:model]; // 判断结果
             
         }
     }
+    
+    [bt setHidden:YES]; // 隐藏按钮
+    
 }
-//[self.showAnswer removeAllObjects];
-//[self.answerOptions setUserInteractionEnabled:YES];
+
+/**
 #pragma mark - 取消答案（每次删除最后一个）
 - (void) quitChooseAnswerWithAnswerLength:(NSInteger) answerLength
 {
@@ -206,33 +210,38 @@
     }else{
         [self.answerOptions setUserInteractionEnabled:YES];
     }
-}
-#pragma mark - 取消全部答案（一次性清除）
-- (void) quitChooseAllAnswerWithAnswerLength:(NSInteger) answerLength
+}  */
+
+// 2017/3/19
+#pragma mark - 第二次提交作业 取消答案（点谁删谁）
+// 使用可变字符串保存答案，放弃原有的数组保存
+- (void) quitChooseAnswer:(UIButton *) answerBt withAnswerLength:(NSInteger) answerLength
 {
-    NSLog(@"pre clearAll");
-//    NSArray *subButtons = self.answer.subviews;
-    [self.showAnswer removeAllObjects];
-    [self.saveAnswer removeAllObjects]; // 判断时 条件
-    self.finalAnswer = @"";
-    if (self.showAnswer.count == 0) {
-        [self.answerOptions setUserInteractionEnabled:YES];
-        NSLog(@"clearAll");
-//        [subButtons[self.showAnswer.count] setTitle:@"" forState:UIControlStateNormal];
+    // 答案选项区域启动交互
+    [self.answerOptions setUserInteractionEnabled:YES];
+    // 点击时 如果当前按钮文字为空 直接返回
+    NSString *answer = answerBt.currentTitle;
+    if (answer == nil) {
+        NSLog(@"empty");
+        return;
     }
+    // 不为空时
+    [answerBt setTitle:nil forState:UIControlStateNormal]; // 清除 按钮文字
+    
+    for (UIButton *optionBt in self.answerOptions.subviews) { // 显示答案选项按钮
+        if ([answer isEqualToString:optionBt.currentTitle] && optionBt.isHidden) {
+            optionBt.hidden = NO;
+            break; // 设置一次
+        }
+    }
+    
 }
+
 #pragma mark - 判断正确 错误
 - (void) yesOrNoWithAnswerLength:(NSInteger) answerLength andModel:(IdiomModel *) model
 {
-    
     // 比较数组的长度 和答案的长度是否相等
-    if ( [self.saveAnswer count] == answerLength) {
-        // 相等时 遍历saveAnswer保存在finalAnswer
-        for (NSString *answer in self.saveAnswer) {
-            self.finalAnswer = [self.finalAnswer stringByAppendingString:answer];
-        }
-        
-        NSLog(@"finalAnswer (%@)",self.finalAnswer);
+    if ( self.finalAnswer.length == answerLength) {
     
         // 获取 得分
         int score = [[self.score currentTitle] intValue];
@@ -241,7 +250,9 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"您真棒👏" message:@"恭喜您，答对了" delegate:nil cancelButtonTitle:@"实力说话" otherButtonTitles:nil, nil];
             [alert show];
            
-            [self nextQuestion]; // 自动下一题
+//            [self nextQuestion]; // 自动下一题
+            [self performSelector:@selector(nextQuestion) withObject:nil afterDelay:1.0]; // 延迟1秒自动下一题
+            
             // TODO 加分
             score += 10000;
             [self.score setTitle:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:score]] forState:UIControlStateNormal];
@@ -256,7 +267,7 @@
 }
 
 #pragma mark - 放大/缩小图片
-- (IBAction)scalePic{
+- (IBAction) scalePic{
     // UIImageView 颜色 边框 宽
     self.imageView.layer.borderColor = [[UIColor greenColor] CGColor];
     self.imageView.layer.borderWidth = 5;
@@ -304,7 +315,7 @@
 
 
 #pragma mark - 下一张图片
-- (IBAction)nextQuestion:(id)sender {
+- (IBAction) nextQuestion:(id)sender {
     
     [self nextQuestion];
     //    if (self.showAnswer.count == 0) {
@@ -315,19 +326,21 @@
 
 }
 
-- (IBAction)nextQuestion
+- (void) nextQuestion
 {
-       self.index++; // 0-9  =>  1-10
-    
+       self.index++; // 0-12  =>  1-13
+    if (self.index == self.questions.count-1) {
+        self.nextBtClicked.enabled = NO;
+    }
     // 重置序号
-    if (self.index == 13) {
-        self.index = 0;
-        // 设置图片 1
-        self.imageView.image =[UIImage imageNamed:@"0.png"];
-    };
-    // 图片数量
+//    if (self.index == self.questions.count) {
+//        self.index = 0;
+//        // 设置图片 1
+//        self.imageView.image =[UIImage imageNamed:@"0.png"];
+//    };
+    // 图片总数量
     NSInteger picCount = [self.questions count];
-    // 设置数字 2/10 => 10/10
+    // 设置数字 2/13 => 13/13
     self.number.text = [NSString stringWithFormat:@"%ld/%ld",(self.index+1)%(picCount+1),picCount];
     // 获取模型
     IdiomModel *model=self.questions[self.index];
@@ -335,7 +348,7 @@
 [self.answerOptions setUserInteractionEnabled:YES];
     // 设置提示文字
     self.tip.text = model.title;
-    // 设置图片 2-10
+    // 设置图片 2-13
     self.imageView.image =[UIImage imageNamed:[NSString stringWithFormat:@"%ld.png",self.index]];
     
     // 添加按钮

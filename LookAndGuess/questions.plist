@@ -29,6 +29,7 @@
 			<string>壁</string>
 			<string>盒</string>
 			<string>王</string>
+			<string>囧</string>
 		</array>
 	</dict>
 	<dict>
@@ -135,8 +136,11 @@
 			<string>鸿</string>
 			<string>笑</string>
 			<string>火</string>
+			<string>山</string>
 			<string>传</string>
+			<string>牛</string>
 			<string>道</string>
+			<string>钱</string>
 			<string>听</string>
 			<string>线</string>
 			<string>风</string>
@@ -246,9 +250,13 @@
 		<key>options</key>
 		<array>
 			<string>江</string>
+			<string>汪</string>
 			<string>亡</string>
 			<string>王</string>
+			<string>新</string>
+			<string>林</string>
 			<string>水</string>
+			<string>星</string>
 			<string>山</string>
 			<string>游</string>
 			<string>会</string>
@@ -333,7 +341,9 @@
 		<array>
 			<string>江</string>
 			<string>梦</string>
+			<string>叫</string>
 			<string>魂</string>
+			<string>就</string>
 			<string>虎</string>
 			<string>游</string>
 			<string>杜</string>
@@ -359,7 +369,6 @@
 		<string>新中国第一领袖</string>
 		<key>options</key>
 		<array>
-			<string>江</string>
 			<string>亡</string>
 			<string>虎</string>
 			<string>龙</string>
